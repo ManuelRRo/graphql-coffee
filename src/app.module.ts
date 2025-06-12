@@ -22,6 +22,7 @@ import { PubSubModule } from './pub-sub/pub-sub.module';
       database: 'graphql-coffee',
       autoLoadEntities: true,
       synchronize: true,
+      logging: ['query'],
     }),
     GraphQLModule.forRoot({
       driver: ApolloDriver,
