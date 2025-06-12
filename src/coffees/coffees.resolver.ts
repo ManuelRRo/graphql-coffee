@@ -8,7 +8,7 @@ import { CoffeesService } from './coffees.service';
 export class CoffeesResolver {
   constructor(private readonly coffeeService: CoffeesService) {}
   @Query(() => [Coffee], { name: 'coffees' })
-  findAll() {
+  async findAll() {
     return this.coffeeService.findAll();
   }
   @Query(() => Coffee, { name: 'coffee', nullable: true })

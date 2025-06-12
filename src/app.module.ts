@@ -15,7 +15,7 @@ import { TypeOrmModule } from '@nestjs/typeorm';
       port: 15000,
       username: 'postgres',
       password: 'pass_nerdery',
-      database: 'postgres',
+      database: 'graphql-coffee',
       autoLoadEntities: true,
       synchronize: true,
     }),

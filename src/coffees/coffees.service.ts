@@ -1,17 +1,33 @@
 import { Injectable } from '@nestjs/common';
 import { CreateCoffeeInput } from './dto/create-coffee.input';
+import { InjectRepository } from '@nestjs/typeorm';
+import { Repository } from 'typeorm';
+import { Coffee } from './entities/coffee.entity';
+import { UserInputError } from '@nestjs/apollo';
 
 @Injectable()
 export class CoffeesService {
-  findAll() {
-    return [];
+  constructor(
+    @InjectRepository(Coffee)
+    private readonly coffeesRepository: Repository<Coffee>,
+  ) {}
+
+  async findAll() {
+    return this.coffeesRepository.find();
   }
 
-  findOne(id: number) {
-    return null;
+  async findOne(id: number) {
+    const coffee = await this.coffeesRepository.findOne({ where: { id } });
+    if (!coffee) {
+      // ⚠️ If you use the latest version of Apollo (>= v4), import "UserInputError" from "@nestjs/graphql"
+      // Users that still depend on Apollo v3 can import this class from the "apollo-server-express" package
+      throw new UserInputError(`Coffee #${id} does not exist`);
+    }
+    return coffee;
   }
 
-  create(createCoffeeInput: CreateCoffeeInput) {
-    return null;
+  async create(createCoffeeInput: CreateCoffeeInput) {
+    const coffee = this.coffeesRepository.create(createCoffeeInput);
+    return this.coffeesRepository.save(coffee);
   }
 }
